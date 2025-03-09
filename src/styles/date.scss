@@ -1,0 +1,54 @@
+.flatpickr-calendar {
+    .flatpickr-rContainer {
+      width: 100%;
+  
+      .flatpickr-monthSelect-months {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+  
+        .flatpickr-monthSelect-month {
+          cursor: pointer;
+          padding: 0.5rem;
+          border-radius: 16px;
+  
+          &.selected {
+            background-color: var(--color-dark-1);
+            color: white;
+          }
+        }
+      }
+    }
+  }
+
+  .flatpickr-time {
+    gap: 16px;
+
+    .numInputWrapper {
+      padding: 0 12px;
+      border: 1px solid black;
+      border-radius: 8px;
+
+      .flatpickr-hour {
+        text-align: left;
+      }
+
+      .flatpickr-minute {
+        text-align: left;
+      }
+
+    }
+
+    .flatpickr-am-pm {
+      border: 1px solid black;
+    }
+
+    .flatpickr-time-separator {
+      display: none;
+    }
+
+    .flatpickr-am-pm {
+      
+    }
+  }
+  

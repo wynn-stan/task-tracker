@@ -1,0 +1,15 @@
+.field-input {
+    @apply text-sm
+      px-3 py-2 
+      min-h-[38px] w-full
+      bg-transparent outline-0 outline-none border-0 rounded-lg;
+  
+    &:disabled {
+      @apply text-gray-800;
+    }
+  
+    &::placeholder {
+      @apply text-gray-800;
+    }
+  }
+  

@@ -1,0 +1,40 @@
+
+h1 {
+    @apply lg:text-[36px]
+      md:text-[30px]
+      text-[24px] leading-[1.4] font-bold;
+  }
+  
+  h2 {
+    @apply lg:text-[30px]
+      md:text-[24px]
+      text-[20px] leading-[1.4] font-bold;
+  }
+  
+  h3 {
+    @apply lg:text-[24px]
+      md:text-[20px]
+      text-[18px] leading-[1.4] font-bold;
+  }
+  
+  h4 {
+    @apply lg:text-[20px] 
+      text-[18px] leading-[1.4] font-bold;
+  }
+
+  .lead {
+    @apply text-[18px] leading-[1.4];
+  }
+  
+  p {
+    @apply leading-[1.5];
+  }
+  
+  small {
+    @apply block text-[14px] leading-[1.4];
+  }
+  
+  .smaller {
+    @apply text-[12px] block leading-[1.5] tracking-normal;
+  }
+  

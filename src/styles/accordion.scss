@@ -1,0 +1,32 @@
+.accordion {
+    @apply grid grid-cols-1 gap-2.5;
+  
+    &__item {
+      @apply border rounded-lg transition divide-y px-4 select-none;
+  
+      &.active {
+        // @apply border-grey-lighter bg-grey-lighter;
+      }
+    }
+  
+    &__header {
+      @apply flex items-center text-sm gap-4 py-3;
+  
+      .toggle {
+        // @apply text-placeholder;
+      }
+  
+      svg {
+        // @apply text-grey;
+      }
+    }
+  
+    &__body {
+      @apply overflow-hidden text-sm;
+  
+      &__content {
+        @apply py-3;
+      }
+    }
+  }
+  

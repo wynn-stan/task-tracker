@@ -1,0 +1,73 @@
+.btn {
+    @apply h-10
+      text-sm
+      transition
+      outline-0 px-5
+      bg-clip-padding
+      border border-transparent rounded-full
+      gap-2 flex items-center justify-center
+      font-semibold whitespace-nowrap select-none 
+      [&.btn-xs]:h-8 [&.btn-sm]:h-9 [&.btn-lg]:h-11 [&.btn-xl]:h-12
+      [&.btn-xs]:px-4;
+
+    @apply disabled:bg-gray-200
+      disabled:text-gray-800
+      disabled:pointer-events-none
+      disabled:border-gray-200 #{!important};
+  
+    // variants
+    @each $name, $value in $theme-colors {
+      &.btn-#{$value} {
+        color: var(--color-white);
+        border-color: var(--color-#{$value});
+        background-color: var(--color-#{$value});
+  
+        &:hover {
+          background-color: rgb(var(--color-#{$value}-200-rgb));
+          border-color: rgb(var(--color-#{$value}-200-rgb));
+        }
+  
+        &:active {
+          @include ring(var(--color-#{$value}-rgb));
+        }
+      }
+  
+      &.btn-outline-#{$value} {
+        border-color: var(--color-#{$value}-30);
+        background-color: var(--color-white);
+  
+        @if $value == 'grey' {
+          color: black;
+        } @else {
+          color: var(--color-#{$value});
+        }
+  
+        &:hover {
+          background-color: var(--color-#{$value}-10);
+          border-color: var(--color-#{$value}-30) !important;
+        }
+  
+        &:active {
+          background-color: var(--color-#{$value}-10);
+          border-color: var(--color-#{$value}-30) !important;
+          @include ring(var(--color-#{$value}-rgb));
+        }
+      }
+  
+      &.btn-light-#{$value} {
+        color: var(--color-#{$value});
+  
+        &:hover {
+          border-color: var(--color-#{$value}-10);
+          background-color: var(--color-#{$value}-10);
+        }
+  
+        &:active {
+          background-color: var(--color-#{$value}-10);
+          border-color: var(--color-#{$value}-10) !important;
+          @include ring(var(--color-#{$value}-rgb));
+        }
+      }
+    }
+  }
+  

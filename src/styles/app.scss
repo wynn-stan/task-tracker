@@ -1,0 +1,21 @@
+@import 'react-toastify/dist/ReactToastify.css'; 
+@import 'flatpickr/dist/themes/airbnb.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "date";
+@import "mixins";
+@import "variables";
+
+@layer base {
+    @import 'reboot';
+    @import 'typography';
+  }
+
+@layer components {
+    @import "button";
+    @import "form";
+    @import "accordion";
+}
