@@ -1,36 +1,118 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Task-It: Task Tracker Application
 
-## Getting Started
+## Overview
 
-First, run the development server:
+This is a simple task tracker application built using **Next.js, React, TypeScript, and the Context API**. It allows users to manage a list of tasks, filter them by priority, and persist data in **localStorage**. The project follows best practices in **state management, modular component design, and UI styling**.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Live Demo
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+You can check out a live demo of the application here: [Task Tracker Demo](https://task-tracker-jet-xi.vercel.app/)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Task Management:** Users can **add, edit, and delete** tasks.
+- **Priority Filtering:** A dropdown allows filtering tasks by priority (**Low, Medium, High**).
+- **Context API:** Used for global state management of tasks and filters.
+- **Data Persistence:** Tasks are stored in **localStorage** and retrieved on page load.
+- **Clean UI:** Styled using CSS for a simple and inviting interface.
 
-## Learn More
+### Bonus Features (Optional)
 
-To learn more about Next.js, take a look at the following resources:
+- **Search Functionality:** Users can search for tasks by title or description.
+- **Drag-and-Drop Support:** Allows reordering of tasks.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project Approach
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+My approach to building this task tracker focused on creating a well-structured, maintainable application with a thoughtful user experience:
 
-## Deploy on Vercel
+1. **Initial Design Phase**: I began by creating comprehensive design documents as a reference point. This upfront investment in planning helped minimize complications during development and ensured a cohesive final product.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2. **Technology Selection**: I chose NextJS + React + TypeScript as the primary tech stack because:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+   - NextJS provides helpful patterns for structuring code
+   - React offers a robust component model
+   - TypeScript ensures type safety throughout the application
+
+3. **Foundation Setup**: Before diving into feature development, I established a solid codebase foundation:
+
+   - Configured the development environment
+   - Set up generic/reusable components
+   - Implemented base styling
+   - Installed necessary packages
+   - Validated the base setup was functioning correctly
+
+4. **Modular Development**: I implemented different views according to my design documents, focusing on:
+
+   - Modular and extensible components
+   - Following React and NextJS design patterns
+   - Creating clear separation of concerns
+
+5. **State Management**: I created a global context store to manage task states throughout the application:
+   - Connected to browser's localStorage for data persistence
+   - Defined specific action functions for each operation type (add, edit, delete, filter)
+   - Established a clean API for components to interact with the state
+
+## Installation & Running Locally
+
+### Prerequisites
+
+- **Node.js (v14 or later)**
+- **Yarn package manager**
+
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/wynn-stan/task-tracker.git
+   ```
+2. Navigate into the project directory:
+   ```sh
+   cd task-tracker
+   ```
+3. Install dependencies:
+   ```sh
+   yarn install
+   ```
+4. Start the development server:
+   ```sh
+   yarn dev
+   ```
+   This will start the app on `http://localhost:3000`.
+
+## Code Structure
+
+- **`/app`** - Next.js app pages.
+- **`/components`** - Reusable UI components.
+- **`/hooks`** - Utility hooks used throughout the project for scalability
+- **`/interfaces`** - Helper interfaces for the project (ModalProps, TPriorityFilter)
+- **`/models`** - Defined Interfaces for entities in the project (TaskModel, CommentModel)
+- **`/providers`** - Providers Context API setup for the project (App, Layout, Store).
+- **`/routes`** - Navigation routes for the project.
+- **`/styles`** - Sass styling.
+- **`/utils`** - Helper functions.
+
+## Notes on State Management
+
+I implemented state management using React's Context API with the following considerations:
+
+1. **Store Context**: Manages the collection of tasks and provides methods for:
+
+   - Adding new tasks
+   - Updating existing tasks
+   - Deleting tasks
+   - Retrieving all tasks
+
+2. **Layout Context**: Handles the current priority filter state, allowing components to:
+
+   - Get the current filter setting
+   - Update the filter selection
+   - Get filtered tasks based on the current selection
+
+3. **Local Storage Integration**: Created a custom hook (`useLocalStorage`) that:
+   - Synchronizes the context state with localStorage
+   - Loads data on application startup
+   - Updates localStorage whenever state changes
+
+This approach keeps the state logic separated from the UI components, making the code more maintainable and testable.
+
+---
+
+Made by Winston Lamptey
