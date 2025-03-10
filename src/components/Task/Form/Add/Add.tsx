@@ -11,17 +11,17 @@ import { Button, Field } from '../../../index';
 import { TPriorityFilter } from '@/interfaces';
 import { useLayout } from '@/hooks';
 
-interface IForm {
+export interface IForm {
   title: string;
   description?: string;
   priority: TPriorityFilter;
   due_on?: string;
 }
 
-interface Props {
+export interface Props {
   onSubmit: (params: IForm, actions: FormikHelpers<any>) => void;
   onCancel: () => void;
-  defaultValues?: IForm;
+  defaultValues?: Partial<IForm>;
 }
 
 export default function Add({ onCancel, onSubmit, defaultValues }: Props) {
@@ -46,10 +46,10 @@ export default function Add({ onCancel, onSubmit, defaultValues }: Props) {
           title: yup.string().required('A title is required'),
         })}
         initialValues={{
-          title: '',
-          description: '',
+          title: defaultValues?.title || '',
+          description: defaultValues?.description || '',
           priority: defaultPriority as TPriorityFilter,
-          due_on: '',
+          due_on: defaultValues?.due_on || '',
         }}
         onSubmit={(params, actions) => {
           onSubmit(params, actions);
@@ -87,13 +87,13 @@ export default function Add({ onCancel, onSubmit, defaultValues }: Props) {
               </div>
 
               <div className="flex gap-2">
-                <Field.Date
+                {/* <Field.Date
                   className={clsx(values.due_on ? 'w-[98px]' : 'w-10')}
                   onChange={(date) => {
                     setFieldValue('due_on', date);
                   }}
                   value={values.due_on}
-                />
+                /> */}
 
                 <PriorityFilter
                   defaultValue={values.priority}
@@ -121,8 +121,8 @@ export default function Add({ onCancel, onSubmit, defaultValues }: Props) {
                 className="btn-primary btn-sm !rounded-md"
                 {...{ isSubmitting }}
               >
-                {!isSubmitting && <Plus className="" />}
-                <small>Add</small>
+                {!isSubmitting && !defaultValues?.title && <Plus className="" />}
+                <small>{defaultValues?.title ? 'Edit' : 'Add'}</small>
               </Button>
             </div>
           </Form>

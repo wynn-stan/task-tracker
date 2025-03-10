@@ -131,7 +131,7 @@ export default function Sidebar({ className, ...props }: HTMLAttributes<HTMLDivE
         'bg-gray-50 px-5 py-8 text-warn',
         'max-w-[224px]',
         'border-r border-gray-200',
-        'w-full space-y-5',
+        'w-full h-full space-y-5',
         className
       )}
     >

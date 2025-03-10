@@ -3,12 +3,14 @@
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { capitalize } from 'lodash';
+import clsx from 'clsx';
+import { DndContext, closestCorners } from '@dnd-kit/core';
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 
 import { TPriorityFilter } from '@/interfaces';
 import { useLayout, useStore } from '@/hooks';
 import { indicatorColors } from '@/utils';
 import { Task } from '@/components';
-import clsx from 'clsx';
 
 export default function Page() {
   /**
@@ -76,19 +78,25 @@ export default function Page() {
         {type !== 'all' && (
           <>
             {Boolean(tasksLength) ? (
-              <div className="space-y-4">
-                {tasks
-                  ?.filter((item) => item.priority === type)
-                  .map((task, index) => (
-                    <Task.List.Item
-                      key={index}
-                      onClick={() => {
-                        setLayout((layout) => ({ ...layout, task_id: task.id }));
-                      }}
-                      {...task}
-                    />
-                  ))}
-              </div>
+              <Task.List.DraggableContext
+                tasks={
+                  tasks?.filter((item) => item.priority === type)?.map((item) => item.id) || []
+                }
+              >
+                <div className="space-y-4">
+                  {tasks
+                    ?.filter((item) => item.priority === type)
+                    .map((task, index) => (
+                      <Task.List.Item
+                        key={task.id}
+                        onClick={() => {
+                          setLayout((layout) => ({ ...layout, task_id: task.id }));
+                        }}
+                        {...task}
+                      />
+                    ))}
+                </div>
+              </Task.List.DraggableContext>
             ) : type !== 'completed' ? (
               <Task.List.Empty />
             ) : (

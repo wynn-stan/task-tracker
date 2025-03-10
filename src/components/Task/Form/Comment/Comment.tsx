@@ -36,8 +36,9 @@ export default function Comment({
       {status === 'view' && (
         <>
           <div className="space-y-1">
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
               <small className="text-gray-600">Anon245</small>
+              <small>-</small>
               <small className="smaller text-gray-400">
                 {dayjs(last_updated).format('DD MMMM YYYY')}
               </small>

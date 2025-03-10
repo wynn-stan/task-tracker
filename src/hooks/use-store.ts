@@ -29,7 +29,7 @@ export const useStore = () => {
   const addTaskService = (task: Omit<TaskModel, 'id' | 'last_updated'>) => {
     const tasks = [{ ...task, id: v4(), last_updated: dayjs().toISOString() }, ...allTasks];
     setStore(tasks);
-    toast.success('Success');
+    toast.success('Task added');
   };
 
   const addCommentService = (task_id: string, comment: CommentModel) => {
@@ -114,12 +114,13 @@ export const useStore = () => {
 
   const removeTaskService = (id: string) => {
     const taskIndex = allTasks.findIndex((item) => item.id === id);
-
-    if (taskIndex !== -1) {
-      setStore(allTasks.splice(taskIndex, 1));
+    if (taskIndex === -1) {
+      toast.error('Task not found');
+      return;
     }
 
-    toast.success('Success');
+    setStore([...allTasks.slice(0, taskIndex), ...allTasks.slice(taskIndex + 1)]);
+    toast.success('Task deleted');
   };
 
   const removeCommentService = (task_id: string, comment_id: string) => {

@@ -31,17 +31,17 @@ export default function Page() {
 
       <div className="space-y-3">
         {Boolean(tasksSummary.trashed) ? (
-          <>
+          <Task.List.DraggableContext tasks={tasks?.map((item) => item.id) || []}>
             {tasks?.map((task, index) => (
               <Task.List.Item
-                key={index}
+                key={task.id}
                 onClick={() => {
                   setLayout((layout) => ({ ...layout, task_id: task.id }));
                 }}
                 {...task}
               />
             ))}
-          </>
+          </Task.List.DraggableContext>
         ) : (
           <Task.List.Empty title="Nothing in trash" action={{}} />
         )}

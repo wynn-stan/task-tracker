@@ -26,9 +26,13 @@ export default function TaskDetails() {
   const onHide = () => setLayout((layout) => ({ ...layout, task_id: undefined }));
 
   return (
-    <Container task_id={layout.task_id} onModalClose={onHide}>
-      <Task.Details.Header />
-    </Container>
+    <>
+      {task && (
+        <Container task_id={layout.task_id} onModalClose={onHide}>
+          <Task.Details.Header />
+        </Container>
+      )}
+    </>
   );
 }
 
@@ -77,7 +81,7 @@ function Container({
 
       {isMobile && (
         <Modal.Side show={show} onHide={() => onModalClose()}>
-          <div className="min-w-[320px] h-full py-4 px-5">{children}</div>
+          <div className="w-[350px] h-full py-4 px-5">{children}</div>
         </Modal.Side>
       )}
     </>

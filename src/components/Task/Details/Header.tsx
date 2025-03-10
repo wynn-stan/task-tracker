@@ -1,4 +1,4 @@
-import { ChatCircle, Clock, TextIndent, XCircle } from '@phosphor-icons/react';
+import { ChatCircle, Clock, Pencil, TextIndent, XCircle } from '@phosphor-icons/react';
 import { useLayout, useStore } from '@/hooks';
 import { useMemo, useState } from 'react';
 import dayjs from 'dayjs';
@@ -6,7 +6,7 @@ import clsx from 'clsx';
 
 import DotIndicator from '../Utils/DotIndicator';
 import Form from '../Form';
-import { Field } from '@/components';
+import { Button, Field } from '@/components';
 import Utils from '../Utils';
 
 export default function Header() {
@@ -20,6 +20,7 @@ export default function Header() {
    * state
    */
   const [editDate, setEditDate] = useState(false);
+  const [editTitle, setEditTitle] = useState(false);
 
   /**
    * variables
@@ -38,9 +39,34 @@ export default function Header() {
   return (
     <div className="flex h-full flex-col justify-between gap-4">
       <div className="">
-        <button onClick={() => setLayout((layout) => ({ ...layout, task_id: undefined }))}>
-          <TextIndent size={20} />
-        </button>
+        <div className="flex gap-4 justify-between">
+          <button onClick={() => setLayout((layout) => ({ ...layout, task_id: undefined }))}>
+            <TextIndent size={20} />
+          </button>
+
+          {task?.id && (
+            <Form.Add.Modal
+              defaultValues={{
+                description: task?.description,
+                priority: task?.priority,
+                title: task?.title,
+              }}
+              onSubmit={(params, actions) => {
+                updateTaskService(task.id, { ...task, ...params });
+              }}
+            >
+              {({ proceed }) => (
+                <Button
+                  onClick={() => proceed()}
+                  className="text-gray-600 flex gap-2 !rounded-md btn-xs border-gray-200"
+                >
+                  <small>Edit</small>
+                  <Pencil size={16} />
+                </Button>
+              )}
+            </Form.Add.Modal>
+          )}
+        </div>
 
         <div className="flex gap-3">
           {!task?.isTrashed && (
@@ -77,7 +103,7 @@ export default function Header() {
             </div>
           )}
 
-          {task?.due_on && !editDate && (
+          {/* {task?.due_on && !editDate && (
             <div
               onClick={() => setEditDate(true)}
               className={clsx(
@@ -97,9 +123,9 @@ export default function Header() {
                 <XCircle className="text-gray-400" size={16} weight="fill" />
               </div>
             </div>
-          )}
+          )} */}
 
-          {(!task?.due_on || editDate) && (
+          {/* {(!task?.due_on || editDate) && (
             <Field.Date
               className={clsx(!task?.due_on ? 'w-10' : 'w-[98px]')}
               onChange={(date) => {
@@ -108,7 +134,7 @@ export default function Header() {
               }}
               value={task?.due_on}
             />
-          )}
+          )} */}
 
           {task?.priority && (
             <Utils.PriorityFilter

@@ -9,6 +9,7 @@ import { indicatorColors } from '@/utils';
 import DotIndicator from '../Utils/DotIndicator';
 import { Accordion } from '../../index';
 import Item from './Item';
+import DraggableContext from './DraggableContext';
 
 interface Props {
   priorities: TPriorityFilter[];
@@ -20,6 +21,9 @@ export default function Section({ priorities }: Props) {
    */
   const { tasksSummary, getAllTasksService, updateTaskService } = useStore();
   const { setLayout } = useLayout();
+
+  const getPriorityTasks = (priority: TPriorityFilter) =>
+    getAllTasksService(priority).filter((item) => !item?.isTrashed);
 
   return (
     <Accordion defaultActiveKey={priorities} className="space-y-5 gap-0">
@@ -37,19 +41,19 @@ export default function Section({ priorities }: Props) {
             </div>
           </Accordion.Header>
 
-          <Accordion.Body contentClassName="space-y-3">
-            {getAllTasksService(priority)
-              .filter((item) => !item?.isTrashed)
-              .map((item, index) => (
+          <DraggableContext tasks={getPriorityTasks(priority).map((item) => item.id)}>
+            <Accordion.Body contentClassName="space-y-3">
+              {getPriorityTasks(priority).map((item, index) => (
                 <Item
-                  key={index}
+                  key={item.id}
                   onClick={() => {
                     setLayout((layout) => ({ ...layout, task_id: item.id }));
                   }}
                   {...item}
                 />
               ))}
-          </Accordion.Body>
+            </Accordion.Body>
+          </DraggableContext>
         </Accordion.Item>
       ))}
     </Accordion>

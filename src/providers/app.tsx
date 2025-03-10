@@ -25,7 +25,7 @@ export default function AppProvider({ children }: { children: React.ReactNode })
         </LayoutProvider>
       </StoreProvider>
       <Toaster />
-      <ProgressBar color="#0074D8" height="4px" options={{ showSpinner: false }} shallowRouting />
+      <ProgressBar color="#0074D8" height="4px" options={{ showSpinner: false }} />
     </>
   );
 }
