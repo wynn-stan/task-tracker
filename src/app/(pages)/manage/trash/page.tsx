@@ -17,7 +17,7 @@ export default function Page() {
   /**
    * store
    */
-  const { getAllTasksService, updateTaskService } = useStore();
+  const { getAllTasksService, updateTaskService, tasksSummary } = useStore();
   const tasks = getAllTasksService().filter((item) => item.isTrashed);
 
   /**
@@ -26,24 +26,25 @@ export default function Page() {
   const { layout, setLayout } = useLayout();
 
   return (
-    <div className="space-y-10">
-      <Task.List.Header showAdd Icon={TrashSimple} showPriorityFilter={false} title={'Trash'} />
+    <div className="space-y-5">
+      <Task.List.Header Icon={TrashSimple} title={'Trash'} />
 
-      <div>
-        {tasks?.map((task, index) => (
-          <Task.List.Item
-            key={index}
-            onClick={() => {
-              setLayout((layout) => ({ ...layout, task_id: task.id }));
-            }}
-            onCheck={(checked) => {
-              updateTaskService(task.id, { isTrashed: false });
-            }}
-            {...task}
-          />
-        ))}
-
-        <Task.List.Empty title="Nothing in trash" action={{}} />
+      <div className="space-y-3">
+        {Boolean(tasksSummary.trashed) ? (
+          <>
+            {tasks?.map((task, index) => (
+              <Task.List.Item
+                key={index}
+                onClick={() => {
+                  setLayout((layout) => ({ ...layout, task_id: task.id }));
+                }}
+                {...task}
+              />
+            ))}
+          </>
+        ) : (
+          <Task.List.Empty title="Nothing in trash" action={{}} />
+        )}
       </div>
     </div>
   );

@@ -18,7 +18,7 @@ export default function SidebarModal({ children }: Props) {
       {children({ proceed: () => setShow(true) })}
 
       <Modal.Side direction="left" show={show} onHide={() => setShow(false)}>
-        <div className="min-w-[224px]" onClick={() => setShow(false)}>
+        <div className="min-w-[224px]" onClick={() => ({})}>
           <Sidebar />
         </div>
       </Modal.Side>

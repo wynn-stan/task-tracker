@@ -1,12 +1,13 @@
 import Flatpickr, { DateTimePickerProps } from 'react-flatpickr';
-import { CalendarBlank } from '@phosphor-icons/react';
+import { CalendarBlank, CalendarDots, XCircle } from '@phosphor-icons/react';
 import dayjs from 'dayjs';
 import clsx from 'clsx';
 
 export interface DateProps extends DateTimePickerProps {
   withIcon?: boolean;
-  setFieldValue: (field: string, value: string, shouldValidate?: boolean) => void;
+  setFieldValue?: (field: string, value: string, shouldValidate?: boolean) => void;
   setFieldTouched?: (field: string, isTouched?: boolean, shouldValidate?: boolean) => void;
+  wrapperClassName?: string;
 }
 
 export function Date({
@@ -15,34 +16,52 @@ export function Date({
   options,
   className,
   placeholder,
-  setFieldValue,
-  setFieldTouched,
+  onChange,
   withIcon = true,
+  wrapperClassName,
   ...props
-}: DateProps) {
+}: DateProps & {
+  onChange: (date: string) => void;
+}) {
   return (
-    <>
+    <div
+      className={clsx(
+        'px-1.5 h-[32px] rounded-md',
+        ' border border-gray-300 ',
+        'flex justify-center items-center gap-1',
+        wrapperClassName
+      )}
+    >
+      {withIcon && (
+        <span className="text-gray-600">
+          <CalendarDots size={20} />
+        </span>
+      )}
       <Flatpickr
         value={value ? dayjs(value as string).toDate() : ''}
-        className={clsx(className, 'field-input')}
+        className={clsx(
+          'text-sm bg-transparent outline-0 outline-none border-0 placeholder:text-gray-600',
+          className
+        )}
         onChange={(date: any) => {
-          setFieldValue(String(name), dayjs(date[0]).format('YYYY-MM-DD'));
-          setTimeout(() => setFieldTouched?.(String(name), true));
+          onChange(dayjs(date[0]).format('DD/MM/YYYY'));
         }}
         options={{
+          altInput: true,
+          altFormat: 'j F, Y',
           disableMobile: true,
           dateFormat: 'd / m / Y',
           ...options,
         }}
-        placeholder={placeholder || 'dd/mm/yyyy'}
+        placeholder={placeholder || 'Date'}
         {...props}
       />
-      {withIcon && (
-        <span className="pr-3 text-grey-80">
-          <CalendarBlank size={24} weight="bold" />
-        </span>
+      {value && (
+        <div className="cursor-pointer" onClick={() => onChange('')}>
+          <XCircle className="text-gray-400" size={20} weight="fill" />
+        </div>
       )}
-    </>
+    </div>
   );
 }
 

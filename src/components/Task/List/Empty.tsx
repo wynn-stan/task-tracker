@@ -18,7 +18,7 @@ export default function Empty({ action, title }: Props) {
       <div className="">
         <Image
           alt="empty"
-          src="/assets/illustrations/empty-tasklist.svg"
+          src="/assets/illustrations/empty-tasklist.png"
           width={280}
           height={280}
           className="w-[160px] h-[160px] md:w-[280px] md:h-[280px] mx-auto"

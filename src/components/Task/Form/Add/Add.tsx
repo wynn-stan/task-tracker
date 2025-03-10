@@ -34,13 +34,13 @@ export default function Add({ onCancel, onSubmit, defaultValues }: Props) {
    * variables
    */
   const defaultPriority =
-    defaultValues?.priority || ['high', 'medium', 'low'].includes(layout?.section || '')
-      ? layout?.section
-      : 'medium';
+    defaultValues?.priority ||
+    (['high', 'medium', 'low'].includes(layout?.section || '') ? layout?.section : 'medium');
 
   return (
     <div className="p-5">
       <Formik
+        enableReinitialize
         validateOnMount
         validationSchema={yup.object({
           title: yup.string().required('A title is required'),
@@ -86,11 +86,22 @@ export default function Add({ onCancel, onSubmit, defaultValues }: Props) {
                 />
               </div>
 
-              <PriorityFilter
-                defaultValue="medium"
-                filters={['high', 'medium', 'low']}
-                onChange={(value) => setFieldValue('priority', value)}
-              />
+              <div className="flex gap-2">
+                <Field.Date
+                  className={clsx(values.due_on ? 'w-[98px]' : 'w-10')}
+                  onChange={(date) => {
+                    setFieldValue('due_on', date);
+                  }}
+                  value={values.due_on}
+                />
+
+                <PriorityFilter
+                  defaultValue={values.priority}
+                  filters={['high', 'medium', 'low']}
+                  onChange={(value) => setFieldValue('priority', value)}
+                  toggleClassName="!h-[32px]"
+                />
+              </div>
             </div>
 
             <div className="border border-gray-200 w-full h-[1px]" />

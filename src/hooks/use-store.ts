@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 
 import { StoreContext } from '@/providers/store';
-import { TaskModel } from '@/models/task';
+import { CommentModel, TaskModel } from '@/models/task';
 import { uniqueId } from 'lodash';
 import { v4 } from 'uuid';
 import { TPriorityFilter } from '@/interfaces';
@@ -32,16 +32,83 @@ export const useStore = () => {
     toast.success('Success');
   };
 
-  const updateTaskService = (id: string, newTask: Partial<TaskModel>) => {
-    const taskIndex = allTasks.findIndex((item) => item.id === id);
-
-    if (taskIndex !== -1) {
-      const oldTask = allTasks[taskIndex];
-      const newList = [...allTasks];
-      newList[taskIndex] = { ...oldTask, ...newTask };
-      setStore(newList);
+  const addCommentService = (task_id: string, comment: CommentModel) => {
+    const taskIndex = allTasks.findIndex((item) => item.id === task_id);
+    if (taskIndex === -1) {
+      toast.error('Task not found');
+      return;
     }
 
+    const task = allTasks[taskIndex];
+
+    const updatedTask = { ...task, comments: [comment, ...(task.comments || [])] };
+
+    const updatedTasks = [
+      ...allTasks.slice(0, taskIndex),
+      updatedTask,
+      ...allTasks.slice(taskIndex + 1),
+    ];
+
+    setStore(updatedTasks);
+    toast.success('success');
+  };
+
+  const updateTaskService = (id: string, details: Partial<TaskModel>) => {
+    const taskIndex = allTasks.findIndex((item) => item.id === id) as number;
+
+    if (taskIndex === -1) {
+      toast.error('Task not found');
+      return;
+    }
+
+    const task = allTasks[taskIndex];
+    const updatedTask = { ...task, ...details };
+    const updatedTasks = [
+      ...allTasks.slice(0, taskIndex),
+      updatedTask,
+      ...allTasks.slice(taskIndex + 1),
+    ];
+    setStore(updatedTasks);
+    toast.success('Success');
+  };
+
+  const updateTaskCommentService = (
+    task_id: string,
+    comment_id: string,
+    details: Partial<CommentModel>
+  ) => {
+    const taskIndex = allTasks.findIndex((item) => item.id === task_id);
+    if (taskIndex === -1) {
+      toast.error('Task not found');
+      return;
+    }
+
+    const task = allTasks[taskIndex];
+
+    const commentIndex = task?.comments?.findIndex((item) => item.id === comment_id) as number;
+    if (!task.comments?.length || commentIndex === -1) {
+      toast.error('Comment not found');
+      return;
+    }
+
+    const updatedComment = { ...task.comments[commentIndex], ...details };
+
+    const updatedTask = {
+      ...task,
+      comments: [
+        ...task.comments.slice(0, commentIndex),
+        updatedComment,
+        ...task.comments.slice(commentIndex + 1),
+      ],
+    };
+
+    const updatedTasks = [
+      ...allTasks.slice(0, taskIndex),
+      updatedTask,
+      ...allTasks.slice(taskIndex + 1),
+    ];
+
+    setStore(updatedTasks);
     toast.success('Success');
   };
 
@@ -55,6 +122,35 @@ export const useStore = () => {
     toast.success('Success');
   };
 
+  const removeCommentService = (task_id: string, comment_id: string) => {
+    const taskIndex = allTasks.findIndex((item) => item.id === task_id);
+    if (taskIndex === -1) {
+      toast.error('Task not found');
+      return;
+    }
+
+    const task = allTasks[taskIndex];
+
+    const commentIndex = task?.comments?.findIndex((item) => item.id === comment_id) as number;
+    if (!task.comments?.length || commentIndex === -1) {
+      toast.error('Comment not found');
+      return;
+    }
+
+    const updatedTask = {
+      ...task,
+      comments: [...task.comments.slice(0, commentIndex), ...task.comments.slice(commentIndex + 1)],
+    };
+    const updatedTasks = [
+      ...allTasks.slice(0, taskIndex),
+      updatedTask,
+      ...allTasks.slice(taskIndex + 1),
+    ];
+
+    setStore(updatedTasks);
+    toast.success('Success');
+  };
+
   const getTaskService = (id: string) => {
     return allTasks.find((item) => item.id === id);
   };
@@ -63,18 +159,18 @@ export const useStore = () => {
     const formatted = content.toLowerCase();
     return allTasks.filter(
       (item) =>
-        item.title.toLowerCase().includes(formatted) ||
-        item?.description?.toLowerCase().includes(formatted)
+        item?.title?.toLowerCase()?.includes(formatted) ||
+        item?.description?.toLowerCase()?.includes(formatted)
     );
   };
 
   const tasksSummary = (() => {
     const total = allTasks.length;
     const trashed = allTasks.filter((item) => item?.isTrashed).length;
-    const high = allTasks.filter((item) => item.priority === 'high').length;
-    const medium = allTasks.filter((item) => item.priority === 'medium').length;
-    const low = allTasks.filter((item) => item.priority === 'low').length;
-    const completed = allTasks.filter((item) => item?.complete).length;
+    const high = allTasks.filter((item) => item.priority === 'high' && !item?.isTrashed).length;
+    const medium = allTasks.filter((item) => item.priority === 'medium' && !item?.isTrashed).length;
+    const low = allTasks.filter((item) => item.priority === 'low' && !item?.isTrashed).length;
+    const completed = allTasks.filter((item) => item?.complete && !item?.isTrashed).length;
     const all = total - trashed;
 
     return {
@@ -91,11 +187,19 @@ export const useStore = () => {
   return {
     store,
     setStore,
+
     getAllTasksService,
-    addTaskService,
-    updateTaskService,
-    removeTaskService,
     getTaskService,
+
+    addTaskService,
+    addCommentService,
+
+    updateTaskService,
+    updateTaskCommentService,
+
+    removeTaskService,
+    removeCommentService,
+
     tasksSummary,
     searchTaskService,
   };

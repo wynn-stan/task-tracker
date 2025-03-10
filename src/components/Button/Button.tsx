@@ -26,7 +26,7 @@ export function Button({
     <button ref={ref} className={clsx('btn', className)} {...{ disabled, ...props }}>
       {isSubmitting ? (
         <span>
-          <Spinner size={20} />
+          <Spinner className="animate-spin" size={20} />
         </span>
       ) : (
         ''

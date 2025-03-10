@@ -1,7 +1,7 @@
 'use client';
 
 import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
-
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { Toaster } from 'react-hot-toast';
 import dayjs from 'dayjs';
@@ -15,6 +15,7 @@ export default function AppProvider({ children }: { children: React.ReactNode })
    * Dayjs
    */
   dayjs.extend(relativeTime);
+  dayjs.extend(customParseFormat);
 
   return (
     <>

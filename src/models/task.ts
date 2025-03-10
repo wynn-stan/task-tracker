@@ -1,6 +1,6 @@
 import { TPriorityFilter } from '@/interfaces';
 
-interface CommentModel {
+export interface CommentModel {
   id: string;
   content: string;
   last_updated: string;

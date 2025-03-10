@@ -1,9 +1,13 @@
 import { initials } from '@dicebear/collection';
 import { createAvatar } from '@dicebear/core';
-import { useMemo } from 'react';
+import { HTMLAttributes, useMemo } from 'react';
 import Image from 'next/image';
 
-export default function UserProfile({ size }: { size?: number }) {
+export default function UserProfile({
+  size,
+  className,
+  ...props
+}: HTMLAttributes<HTMLImageElement> & { size?: number }) {
   /**
    * memo
    */
@@ -13,10 +17,11 @@ export default function UserProfile({ size }: { size?: number }) {
   return (
     <Image
       alt="profile"
-      className="bg-cover bg-center rounded-md"
+      className={`bg-cover bg-center rounded-md ${className}`}
       width={size || 32}
       height={size || 32}
       src={profileUrl}
+      {...props}
     />
   );
 }

@@ -1,22 +1,25 @@
 'use client';
 
 import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { capitalize } from 'lodash';
 
+import { TPriorityFilter } from '@/interfaces';
+import { useLayout, useStore } from '@/hooks';
 import { indicatorColors } from '@/utils';
 import { Task } from '@/components';
-import { useLayout, useStore } from '@/hooks';
-import { useEffect } from 'react';
+import clsx from 'clsx';
 
 export default function Page() {
   /**
-   * routes
+   * state
    */
-  const { type } = useParams<{ type: string }>();
+  const [filter, setFilter] = useState<TPriorityFilter>('all');
 
   /**
    * hooks
    */
+  const { type } = useParams<{ type: string }>();
   const { layout, setLayout } = useLayout();
   const { getAllTasksService, updateTaskService } = useStore();
 
@@ -24,11 +27,13 @@ export default function Page() {
    * variables
    */
   const details = (() => {
-    if (type === 'all') return { title: `${type} tasks`, showPriorityFilter: true };
+    if (type === 'all') return { title: `${type} tasks` };
     if (type !== 'completed') return { title: `${type} priority` };
     return { title: `${type}` };
   })();
   const tasks = getAllTasksService().filter((item) => !item.isTrashed);
+  const tasksLength =
+    type === 'all' ? tasks?.length : tasks?.filter((item) => item.priority === type).length;
 
   /**
    * effect
@@ -44,36 +49,53 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="space-y-10">
+    <div className={clsx(type === 'all' ? 'space-y-8' : 'space-y-5')}>
       <Task.List.Header
         showAdd={type !== 'completed'}
         indicator_color={(indicatorColors as any)?.[type]}
-        showPriorityFilter={details?.showPriorityFilter}
+        onFilterChange={(key) => {
+          setFilter(key);
+          setLayout((layout) => ({ ...layout, section: key }));
+        }}
         title={capitalize(details.title)}
       />
 
       <div>
         {type === 'all' && (
-          <Task.List.Section priorities={['high', 'medium', 'low', 'completed']} />
+          <>
+            {Boolean(tasksLength) ? (
+              <Task.List.Section
+                priorities={filter === 'all' ? ['high', 'medium', 'low', 'completed'] : [filter]}
+              />
+            ) : (
+              <Task.List.Empty />
+            )}{' '}
+          </>
         )}
 
         {type !== 'all' && (
-          <div className="space-y-4">
-            {tasks
-              ?.filter((item) => item.priority === type)
-              .map((task, index) => (
-                <Task.List.Item
-                  key={index}
-                  onClick={() => {
-                    setLayout((layout) => ({ ...layout, task_id: task.id }));
-                  }}
-                  {...task}
-                />
-              ))}
-          </div>
+          <>
+            {Boolean(tasksLength) ? (
+              <div className="space-y-4">
+                {tasks
+                  ?.filter((item) => item.priority === type)
+                  .map((task, index) => (
+                    <Task.List.Item
+                      key={index}
+                      onClick={() => {
+                        setLayout((layout) => ({ ...layout, task_id: task.id }));
+                      }}
+                      {...task}
+                    />
+                  ))}
+              </div>
+            ) : type !== 'completed' ? (
+              <Task.List.Empty />
+            ) : (
+              <Task.List.Empty title="No completed tasks yet" action={{}} />
+            )}
+          </>
         )}
-
-        <Task.List.Empty />
       </div>
     </div>
   );

@@ -2,7 +2,7 @@
 
 import { Plus } from '@phosphor-icons/react';
 import { Form, Formik } from 'formik';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import * as yup from 'yup';
 import clsx from 'clsx';
@@ -33,14 +33,16 @@ export default function Search({ onCancel, onSelect }: Props) {
   /**
    * functions
    */
-  const handleSearch = (key: string) => {
+  const handleSearch = (key: string) => {};
+
+  useEffect(() => {
     setLoading(true);
 
-    const results = searchTaskService(key);
+    const results = searchTaskService(search);
     setResults(results || []);
 
-    setLoading(false);
-  };
+    setTimeout(() => setLoading(false));
+  }, [search]);
 
   return (
     <div className="p-5 pb-10 space-y-4">
@@ -48,7 +50,6 @@ export default function Search({ onCancel, onSelect }: Props) {
         autoFocus
         onSearch={(key: string) => {
           setSearch(key);
-          handleSearch(search);
         }}
         wrapperClassName={clsx('border-0 !px-0 !py-0')}
         inputClassName={clsx('placeholder:text-gray-400 !py-0 text-gray-600')}
@@ -68,12 +69,12 @@ export default function Search({ onCancel, onSelect }: Props) {
       )}
 
       {/* No search */}
-      {!isLoading && !search && (
+      {!isLoading && !Boolean(search) && (
         <div className="space-y-3 ">
           <div className="">
             <Image
               alt="empty"
-              src="/assets/illustrations/search.svg"
+              src="/assets/illustrations/search.png"
               width={280}
               height={280}
               className="w-[160px] h-[160px] md:w-[280px] md:h-[280px] mx-auto"
@@ -89,7 +90,7 @@ export default function Search({ onCancel, onSelect }: Props) {
       )}
 
       {/* Results */}
-      {!isLoading && search && results?.length && (
+      {!isLoading && !!search && !!results?.length && (
         <div className="space-y-4 overflow-y-auto max-h-[360px]">
           {results?.map((item, index) => {
             return (
@@ -107,12 +108,12 @@ export default function Search({ onCancel, onSelect }: Props) {
       )}
 
       {/* No results */}
-      {!isLoading && search && !results?.length && (
+      {!isLoading && !!search && !results?.length && (
         <div className="space-y-3 ">
           <div className="">
             <Image
               alt="empty"
-              src="/assets/illustrations/ghost.svg"
+              src="/assets/illustrations/ghost.png"
               width={280}
               height={280}
               className="w-[160px] h-[160px] md:w-[280px] md:h-[280px] mx-auto"

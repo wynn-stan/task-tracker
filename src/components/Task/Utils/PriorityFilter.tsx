@@ -6,16 +6,19 @@ import { indicatorColors } from '@/utils';
 
 import { Dropdown } from '../../index';
 import DotIndicator from './DotIndicator';
+import clsx from 'clsx';
 
 interface Props {
   onChange?: (key: TPriorityFilter) => void;
   defaultValue?: TPriorityFilter;
   filters?: TPriorityFilter[];
+  toggleClassName?: string;
 }
 
 export default function PriorityFilter({
   defaultValue = 'all',
   filters = ['all', 'high', 'medium', 'low', 'completed'],
+  toggleClassName,
   onChange,
 }: Props) {
   /**
@@ -39,9 +42,14 @@ export default function PriorityFilter({
 
   return (
     <Dropdown>
-      <Dropdown.Toggle className="px-1.5 h-[28px] border border-gray-300 rounded-md">
+      <Dropdown.Toggle
+        className={clsx(
+          'px-1.5 h-[28px] border border-gray-300 text-gray-600 rounded-md',
+          toggleClassName
+        )}
+      >
         <DotIndicator priority={active} />
-        <small className="px-2 text-gray-600">
+        <small className="px-2 ">
           {options.find((item) => item.value === active)?.label || '--'}
         </small>
         <CaretDown size={12} className="text-gray-600" />

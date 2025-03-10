@@ -7,22 +7,17 @@ import { Button, RootNavigation } from '../../index';
 
 import Form from '../Form';
 import clsx from 'clsx';
+import { TPriorityFilter } from '@/interfaces';
 
 interface Props {
   title: string;
   showAdd?: boolean;
   indicator_color?: string;
   Icon?: Icon;
-  showPriorityFilter?: boolean;
+  onFilterChange?: (key: TPriorityFilter) => void;
 }
 
-export default function Header({
-  title,
-  showPriorityFilter,
-  Icon,
-  indicator_color,
-  showAdd,
-}: Props) {
+export default function Header({ title, Icon, indicator_color, showAdd, onFilterChange }: Props) {
   /**
    * state
    */
@@ -48,7 +43,7 @@ export default function Header({
             </div>
             <h4>{title}</h4>
           </div>
-          {showPriorityFilter && <PriorityFilter />}
+          {onFilterChange && <PriorityFilter onChange={(key) => onFilterChange(key)} />}
         </div>
       </div>
 

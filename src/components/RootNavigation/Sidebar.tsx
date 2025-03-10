@@ -69,14 +69,14 @@ export default function Sidebar({ className, ...props }: HTMLAttributes<HTMLDivE
         { Modal: Task.Form.Add.Modal, Icon: PlusCircle, icon_fill: true, label: 'Add task' },
       ],
     },
-    schedule: {
-      label: 'Schedule',
-      sub_items: [
-        { label: 'Today', slug: routes.schedule.today, Icon: Clock },
-        { label: 'Upcoming', slug: routes.schedule.upcoming, Icon: CalendarDots },
-        { label: 'Overdue', slug: routes.schedule.overdue, Icon: Hourglass },
-      ],
-    },
+    // schedule: {
+    //   label: 'Schedule',
+    //   sub_items: [
+    //     { label: 'Today', slug: routes.schedule.today, Icon: Clock },
+    //     { label: 'Upcoming', slug: routes.schedule.upcoming, Icon: CalendarDots },
+    //     { label: 'Overdue', slug: routes.schedule.overdue, Icon: Hourglass },
+    //   ],
+    // },
     tasks: {
       label: 'Tasks',
       sub_items: [
@@ -148,7 +148,7 @@ export default function Sidebar({ className, ...props }: HTMLAttributes<HTMLDivE
 
       {Object.values(NavLinks).map((section, i) => {
         return (
-          <div key={i} className="space-y-3">
+          <div key={`${section.label}-1`} className="space-y-3">
             <small className="smaller font-medium text-gray-400">{section.label}</small>
             <div className="space-y-2">
               {section.sub_items.map((Item, j) => {

@@ -8,8 +8,10 @@ import { TaskModel } from '@/models/task';
 
 import DotIndicator from '../Utils/DotIndicator';
 import { Field } from '../../index';
+import Utils from '../Utils';
 
 interface Props extends TaskModel {
+  onRestore?: () => void;
   onCheck?: (checked: boolean) => void;
   onClick: () => void;
 }
@@ -52,7 +54,7 @@ export default function Item({
         <Field.Checkbox
           className="mt-1"
           withFormik={false}
-          checked={complete}
+          checked={Boolean(complete)}
           onChange={({ stopPropagation, currentTarget: { checked } }) => {
             stopPropagation();
             if (onCheck) {
@@ -82,10 +84,10 @@ export default function Item({
         )}
 
         <div className="flex gap-4 mt-3 text-gray-500">
-          {comments && (
+          {Boolean(comments?.length) && (
             <div className="flex items-center gap-1">
               <ChatCircle size={14} weight="bold" />
-              <small className="">{comments.length}</small>
+              <small className="">{comments?.length}</small>
             </div>
           )}
 
@@ -112,7 +114,8 @@ export default function Item({
 
       {!isTrashed ? (
         <div
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation();
             updateTaskService(id, { isTrashed: true });
           }}
         >
@@ -120,7 +123,8 @@ export default function Item({
         </div>
       ) : (
         <div
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation();
             updateTaskService(id, { isTrashed: false });
           }}
         >
