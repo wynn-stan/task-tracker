@@ -1,5 +1,5 @@
 import { HtmlHTMLAttributes, useCallback, useContext } from 'react';
-import { CaretDown } from '@phosphor-icons/react';
+import { CaretDown, CaretRight } from '@phosphor-icons/react';
 
 import AccordionContext from './AccordionContext';
 import ItemContext from './ItemContext';
@@ -9,7 +9,7 @@ export interface HeaderProps extends HtmlHTMLAttributes<HTMLDivElement> {
   icon?: 'right' | 'left' | 'hidden';
 }
 
-function Header({ className, children, icon = 'right', ...props }: HeaderProps) {
+function Header({ className, children, icon = 'left', ...props }: HeaderProps) {
   /**
    * context
    */
@@ -48,7 +48,7 @@ function Header({ className, children, icon = 'right', ...props }: HeaderProps) 
     <div
       role="button"
       onClick={() => handleClick()}
-      className={clsx(className, 'accordion__header')}
+      className={clsx('accordion__header', className)}
       {...props}
     >
       {icon === 'left' && <Icon {...{ active }} />}
@@ -61,10 +61,9 @@ function Header({ className, children, icon = 'right', ...props }: HeaderProps) 
 function Icon({ active, className }: { active: boolean; className?: string }) {
   return (
     <span className={clsx('toggle', className)}>
-      <CaretDown
+      <CaretRight
         size={16}
-        weight="bold"
-        className={clsx('transition-all', active && 'rotate-180')}
+        className={clsx('transition-all text-gray-400', active && 'rotate-90')}
       />
     </span>
   );

@@ -1,5 +1,9 @@
 'use client';
 
+import { redirect } from 'next/navigation';
+
+import routes from '@/routes';
+
 export default function Page() {
-  return <div>Page here</div>;
+  redirect(routes.tasks.all);
 }

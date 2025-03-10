@@ -4,7 +4,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { useState } from 'react';
 import { Formik } from 'formik';
 
-import { Accordion, Confirm, Button, Dropdown, Field, Modal } from '../../components/';
+import { Accordion, Confirm, Button, Dropdown, Field, Modal } from '@/components/';
 
 export default function Page() {
   /**

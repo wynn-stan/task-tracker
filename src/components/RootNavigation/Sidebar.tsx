@@ -8,16 +8,20 @@ import {
   PlusCircle,
   TrashSimple,
 } from '@phosphor-icons/react';
-import { adventurerNeutral } from '@dicebear/collection';
 import React, { HTMLAttributes, useMemo } from 'react';
+import { initials } from '@dicebear/collection';
 import { createAvatar } from '@dicebear/core';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import clsx from 'clsx';
 
-import routes from '../../routes';
+import { indicatorColors } from '@/utils';
+import { useStore } from '@/hooks';
+import routes from '@/routes';
+
 import Modals from '../Modals';
+import Task from '../Task';
 
 type Icon = (props: any) => React.ReactNode;
 
@@ -45,12 +49,14 @@ export default function Sidebar({ className, ...props }: HTMLAttributes<HTMLDivE
    * routes
    */
   const path = usePathname();
+
   /**
-   * Memo
+   * hooks
    */
   const profileUrl = useMemo(() => {
-    return createAvatar(adventurerNeutral, { size: 32 }).toDataUri();
+    return createAvatar(initials, { size: 32, seed: 'Anon245' }).toDataUri();
   }, []);
+  const { tasksSummary } = useStore();
 
   /**
    * Nav
@@ -59,8 +65,8 @@ export default function Sidebar({ className, ...props }: HTMLAttributes<HTMLDivE
     quick_actions: {
       label: 'Quick Actions',
       sub_items: [
-        { Modal: Modals.Search, Icon: MagnifyingGlass, icon_fill: true, label: 'Search' },
-        { Modal: Modals.AddTask, Icon: PlusCircle, icon_fill: true, label: 'Add task' },
+        { Modal: Task.Form.Search.Modal, Icon: MagnifyingGlass, icon_fill: true, label: 'Search' },
+        { Modal: Task.Form.Add.Modal, Icon: PlusCircle, icon_fill: true, label: 'Add task' },
       ],
     },
     schedule: {
@@ -74,16 +80,48 @@ export default function Sidebar({ className, ...props }: HTMLAttributes<HTMLDivE
     tasks: {
       label: 'Tasks',
       sub_items: [
-        { label: 'All', slug: routes.tasks.all, indicator_color: '#E5E7EB', count: 20 },
-        { label: 'High', slug: routes.tasks.high, indicator_color: '#F75D34', count: 2 },
-        { label: 'Medium', slug: routes.tasks.medium, indicator_color: '#FFE248', count: 8 },
-        { label: 'Low', slug: routes.tasks.low, indicator_color: '#E5E7EB', count: 5 },
-        { label: 'Completed', slug: routes.tasks.completed, indicator_color: '#0074D8', count: 5 },
+        {
+          label: 'All',
+          slug: routes.tasks.all,
+          indicator_color: indicatorColors.all,
+          count: tasksSummary.all,
+        },
+        {
+          label: 'High',
+          slug: routes.tasks.high,
+          indicator_color: indicatorColors.high,
+          count: tasksSummary.high,
+        },
+        {
+          label: 'Medium',
+          slug: routes.tasks.medium,
+          indicator_color: indicatorColors.medium,
+          count: tasksSummary.medium,
+        },
+        {
+          label: 'Low',
+          slug: routes.tasks.low,
+          indicator_color: indicatorColors.all,
+          count: tasksSummary.low,
+        },
+        {
+          label: 'Completed',
+          slug: routes.tasks.completed,
+          indicator_color: indicatorColors.completed,
+          count: tasksSummary.completed,
+        },
       ],
     },
     manage: {
       label: 'Manage',
-      sub_items: [{ label: 'Trash', slug: routes.manage.trash, Icon: TrashSimple }],
+      sub_items: [
+        {
+          label: 'Trash',
+          slug: routes.manage.trash,
+          Icon: TrashSimple,
+          count: tasksSummary.trashed,
+        },
+      ],
     },
   };
 
@@ -119,7 +157,7 @@ export default function Sidebar({ className, ...props }: HTMLAttributes<HTMLDivE
                 return (
                   <>
                     {Item?.Modal && (
-                      <Item.Modal key={j}>
+                      <Item.Modal key={`modal-${Item.label}`}>
                         {({ proceed }) => (
                           <div
                             role="button"
@@ -141,7 +179,7 @@ export default function Sidebar({ className, ...props }: HTMLAttributes<HTMLDivE
 
                     {!isModalAction && (
                       <Link
-                        key={j}
+                        key={`slug-${Item.label}`}
                         href={Item?.slug || ''}
                         className={clsx(
                           'flex items-center justify-between gap-2.5 px-2 h-8 rounded-md',
@@ -164,7 +202,7 @@ export default function Sidebar({ className, ...props }: HTMLAttributes<HTMLDivE
                           )}
                           <small className="font-medium text-gray-600">{Item.label}</small>
                         </div>
-                        {Item?.count && <small className="text-gray-400">{Item.count}</small>}
+                        <small className="text-gray-400">{Item.count}</small>
                       </Link>
                     )}
                   </>

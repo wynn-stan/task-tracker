@@ -43,16 +43,18 @@ export default function Search({
         `outline-none px-4 border border-gray-10 w-full ${wrapperClassName}`
       )}
     >
-      <MagnifyingGlass className="text-gray-30" size={20} />
+      <MagnifyingGlass className="text-gray-400" size={20} />
 
       <input
         name="search"
+        autoComplete="off"
         placeholder={placeholder || 'Search...'}
         className={clsx('py-3 outline-none w-full', inputClassName)}
         onChange={({ currentTarget: { value } }: ChangeEvent<HTMLInputElement>) => {
           setSearch(value);
           handleSearch(value);
         }}
+        {...props}
       />
     </div>
   );

@@ -4,8 +4,10 @@ import { HTMLAttributes } from 'react';
 import Link from 'next/link';
 import clsx from 'clsx';
 
-import routes from '../../routes';
+import routes from '@/routes';
+
 import Modals from '../Modals';
+import Task from '../Task';
 
 interface NavLink {
   label: string;
@@ -29,12 +31,20 @@ export default function Navbar({ className, ...props }: HTMLAttributes<HTMLDivEl
    */
   const NavLinks: NavLink[] = [
     { label: 'Home', Icon: House, slug: routes.tasks.all },
-    { label: 'Search', Icon: MagnifyingGlass, Modal: Modals.Search },
-    { label: 'Add Task', Icon: Plus, Modal: Modals.AddTask },
+    { label: 'Search', Icon: MagnifyingGlass, Modal: Task.Form.Search.Modal },
+    { label: 'Add Task', Icon: Plus, Modal: Task.Form.Add.Modal },
     { label: 'Trash', Icon: TrashSimple, slug: routes.manage.trash },
   ];
   return (
-    <div className={clsx('fixed bottom-0 w-full', 'py-4 px-8', 'flex justify-between', className)}>
+    <div
+      className={clsx(
+        'fixed bottom-0 w-full',
+        'py-4 px-8',
+        'flex justify-between',
+        'bg-white border-t border-gray-100',
+        className
+      )}
+    >
       {NavLinks.map((Item, index) => {
         const activeRoute = path.includes(Item?.slug || '');
         return (

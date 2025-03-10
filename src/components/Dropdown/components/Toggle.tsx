@@ -21,6 +21,7 @@ export const Toggle = ({
       {(props) => {
         return (
           <Component
+            type="button"
             className={clsx(className, 'flex items-center', withIcon && 'gap-2')}
             {...rest}
             {...props}

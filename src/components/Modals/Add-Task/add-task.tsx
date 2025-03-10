@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Modal } from '../../../components';
+import { Modal } from '@/components';
 
 interface Props {
   children: ({ proceed }: { proceed: () => void }) => void;

@@ -3,7 +3,6 @@ import { CalendarBlank } from '@phosphor-icons/react';
 import dayjs from 'dayjs';
 import clsx from 'clsx';
 
-// eslint-disable-next-line
 export interface DateProps extends DateTimePickerProps {
   withIcon?: boolean;
   setFieldValue: (field: string, value: string, shouldValidate?: boolean) => void;

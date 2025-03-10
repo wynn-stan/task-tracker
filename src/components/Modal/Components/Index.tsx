@@ -12,6 +12,7 @@ export interface ModalProps extends Omit<Restart.ModalProps, 'children'> {
   dialogProps?: HTMLProps<HTMLDivElement>;
   children?: React.ReactNode;
   previous?: () => void;
+  showCloseIcon?: boolean;
 }
 
 export function Modal({
@@ -23,6 +24,7 @@ export function Modal({
   index = 0,
   backdrop,
   dialogProps,
+  showCloseIcon = true,
   ...props
 }: ModalProps) {
   /**
@@ -112,7 +114,7 @@ export function Modal({
           className={clsx(
             'w-full h-full',
             `fixed top-0 left-0`,
-            'bg-black/20 inset-0 backdrop-blur-[5.5px]'
+            'bg-black/25 inset-0 backdrop-blur-[5.5px]'
           )}
         />
       )}
@@ -132,23 +134,19 @@ export function Modal({
           dialogProps?.className
         )}
       >
-        <div
-          className={clsx('space-y-3 w-full rounded-lg', 'shadow-3xl bg-white relative')}
-          //   className={helpers.classNames(
-          //     'w-full rounded-lg mx-4 my-auto',
-          //     'shadow-3xl bg-white relative'
-          //   )}
-        >
-          <div
-            role="button"
-            onClick={() => handleClose()}
-            className={clsx(
-              'ml-auto !px-0 !h-6 !w-6 border-0 active:shadow-none',
-              'flex items-center justify-center rounded-full bg-white'
-            )}
-          >
-            <X weight="bold" />
-          </div>
+        <div className={clsx('space-y-3 w-full rounded-lg', 'shadow-3xl bg-white relative')}>
+          {showCloseIcon && (
+            <div
+              role="button"
+              onClick={() => handleClose()}
+              className={clsx(
+                'ml-auto !px-0 !h-6 !w-6 border-0 active:shadow-none',
+                'flex items-center justify-center rounded-full bg-white'
+              )}
+            >
+              <X weight="bold" />
+            </div>
+          )}
 
           <div>{children}</div>
           {/* <div className="md:px-10 md:py-6 p-4 relative">{children}</div> */}

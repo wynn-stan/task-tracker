@@ -1,6 +1,10 @@
 'use client';
 
 import { useParams } from 'next/navigation';
+import { capitalize } from 'lodash';
+
+import { indicatorColors } from '@/utils';
+import { Task } from '@/components';
 
 export default function Page() {
   /**
@@ -8,5 +12,13 @@ export default function Page() {
    */
   const { type } = useParams<{ type: string }>();
 
-  return <div>Welcome to {type}</div>;
+  return (
+    <div>
+      <Task.List.Header
+        showAdd
+        indicator_color={(indicatorColors as any)?.[type]}
+        title={capitalize(`${type} Tasks`)}
+      />
+    </div>
+  );
 }

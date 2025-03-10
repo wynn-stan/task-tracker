@@ -26,7 +26,7 @@ export const Menu = ({ role, className, children, ...rest }: MenuProps) => {
       {...props}
       role={role}
       className={clsx(
-        'bg-white flex-col rounded',
+        'bg-white flex-col rounded-md',
         'shadow-[2px_2px_8px_0px_rgba(0,0,0,0.12)] !bg-white !z-[5] py-1',
         'flex overflow-auto min-w-[200px] border-lg',
         show ? '!flex' : '!hidden',

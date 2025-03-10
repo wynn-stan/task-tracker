@@ -44,8 +44,6 @@ export function Side({
     }
   }, [show]);
 
-  console.log(String(showModal));
-
   return (
     <Restart.Modal
       show={showModal}

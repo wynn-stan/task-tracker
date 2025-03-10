@@ -5,7 +5,6 @@ import AccordionContext from './AccordionContext';
 import ItemContext from './ItemContext';
 import clsx from 'clsx';
 
-// eslint-disable-next-line
 export interface BodyProps
   extends Omit<
     HtmlHTMLAttributes<HTMLDivElement>,

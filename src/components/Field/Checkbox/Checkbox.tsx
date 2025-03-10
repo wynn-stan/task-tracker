@@ -24,7 +24,7 @@ export function Checkbox({
   const Input = withFormik ? Field : 'input';
 
   return (
-    <label className={clsx(className, 'inline-flex items-start gap-4 relative cursor-pointer')}>
+    <label className={clsx(className, 'gap-4 relative cursor-pointer')}>
       <Input
         {...props}
         type="checkbox"
@@ -33,16 +33,15 @@ export function Checkbox({
       />
       <div
         className={clsx(
-          'w-5 h-5 flex-[0_0_1.25rem]',
-          'flex rounded-sm border-2 transition border-gray',
-          'peer-checked:bg-green peer-checked:border-green'
+          'w-[18px] h-[18px]',
+          'flex rounded-md border transition border-gray-200',
+          'peer-checked:bg-primary peer-checked:border-0'
         )}
       >
         <Check
-          className={clsx(
-            'w-4 h-4 m-auto stroke-[3px]',
-            isChecked ? 'bg-black text-white' : 'text-transparent'
-          )}
+          weight="bold"
+          size={14}
+          className={clsx('m-auto', isChecked ? 'bg-primary text-white' : 'text-transparent')}
         />
       </div>
       <div className="select-none text-sm">{children}</div>

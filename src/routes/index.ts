@@ -14,7 +14,7 @@ const routes = {
   },
 
   manage: {
-    trash: '/tasks/trash',
+    trash: '/manage/trash',
   },
 };
 
