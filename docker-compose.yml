@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  task-tracker:
+    image: wlamptey/task-tracker:latest
+    container_name: task-tracker
+    restart: unless-stopped
+    networks:
+      - web
+    labels:
+      - 'traefik.enable=true'
+      - "traefik.http.routers.task-tracker.rule=Host('task-tracker.cloud.test')"
+      - 'traefik.http.routers.myapp.entrypoints=http'
+      - 'traefik.http.services.myapp.loadbalancer.server.port=3000'
+
+networks:
+  web:
+    external: true

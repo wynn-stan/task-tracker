@@ -1,15 +1,37 @@
-FROM node:lts-slim
+# --------- Build Stage ---------
+    FROM node:18-alpine AS builder
 
-WORKDIR /usr/src/app
+    WORKDIR /app
+    
+    # Install dependencies
+    COPY package.json yarn.lock ./
+    RUN yarn install --frozen-lockfile
+    
+    # Copy source and build
+    COPY . .
+    RUN yarn build
+    
+    # --------- Production Stage ---------
+    FROM node:18-alpine AS runner
+    
+    WORKDIR /app
+    
+    ENV NODE_ENV=production
+    
+    # Copy only necessary files from builder
+    COPY --from=builder /app/next.config.ts ./next.config.ts
 
-COPY package.json .
+    COPY --from=builder /app/package.json ./package.json
+    COPY --from=builder /app/yarn.lock* ./
 
-RUN yarn install
+    COPY --from=builder /app/.next ./.next
+    COPY --from=builder /app/public ./public
 
-EXPOSE 3000
-
-COPY . .
-
-RUN npm run build
-
-CMD ["npm", "run", "start"]
+    RUN yarn install --production --frozen-lockfile --ignore-scripts && \
+        yarn cache clean && \
+        rm -rf /tmp/* /var/cache/apk/*
+    
+    EXPOSE 3000
+    
+    CMD ["yarn", "start"]
+    
