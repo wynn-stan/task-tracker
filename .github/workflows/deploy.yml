@@ -12,11 +12,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Debug Docker Username
-        run: echo "Username '${{ secrets.DOCKER_USERNAME }}' a" && echo "Username ${{ secrets.DOCKER_USERNAME }}"
-
       - name: Log in to Docker Hub
-        run: echo "{{ secrets.DOCKER_PASSWORD }}" | docker login -u "{{ secrets.DOCKER_USERNAME }}" --password-stdin
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
 
       - name: Build Docker image
         run: docker build -t ${{ secrets.DOCKER_USERNAME }}/task-tracker:latest .
@@ -32,7 +29,7 @@ jobs:
 
       - name: Copy docker-compose file
         run: |
-          scp -i winston-aws-vm-key -o StrickHostKeyChecking=no docker-compose.yml ${{ secrets.EC2_USER }}@{{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USER }}/task-tracker
+          scp -i winston-aws-vm-key -o StrickHostKeyChecking=no docker-compose.yml ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USER }}/task-tracker
 
       - name: SSH and deploy on EC2
         run: |
