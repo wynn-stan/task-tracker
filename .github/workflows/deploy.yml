@@ -29,12 +29,13 @@ jobs:
 
       - name: Copy docker-compose file
         run: |
-          scp -i ~/.ssh/winston-aws-vm-key -o StrictHostKeyChecking=no docker-compose.yml ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USER }}/task-tracker
+          ssh -i ~/.ssh/winston-aws-vm-key -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} -t "mkdir -p ~/services/task-tracker"
+          scp -i ~/.ssh/winston-aws-vm-key -o StrictHostKeyChecking=no docker-compose.yml ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USER }}/services/task-tracker/docker-compose.yml
 
       - name: SSH and deploy on EC2
         run: |
           ssh -i ~/.ssh/winston-aws-vm-key -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
-            cd ~/task-tracker
+            cd ~/services/task-tracker
             docker compose pull
             docker compose down
             docker compose up -d
