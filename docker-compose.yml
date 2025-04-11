@@ -7,7 +7,7 @@ services:
       - web
     labels:
       - 'traefik.enable=true'
-      - "traefik.http.routers.task-tracker.rule=Host('task-tracker.cloud.test')"
+      - 'traefik.http.routers.task-tracker.rule=Host(`task-tracker.cloud.test`)'
       - 'traefik.http.routers.task-tracker.entrypoints=http'
       - 'traefik.http.services.task-tracker.loadbalancer.server.port=3000'
 
